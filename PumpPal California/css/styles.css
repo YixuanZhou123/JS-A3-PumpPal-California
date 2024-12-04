@@ -1,0 +1,340 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background-color: #f8f8f8;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.title-image {
+  width: 100%;
+  max-height: 120px;
+  object-fit: cover;
+}
+
+.map {
+  width: 80%;
+  height: 100%;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: calc(100vh - 120px); /* Adjust height to fit the header */
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+#search-box {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.cross-icon {
+  background: none;
+  border: none;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.checkbox-group div {
+  margin: 1%;
+}
+
+.checkbox-group label {
+  margin-left: 1%;
+}
+
+.right-side {
+  width: 20%; /* Adjust width to fit the Chrome scale */
+  background: #f9f9f9;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.right-side fieldset {
+  border: none;
+  margin-bottom: 15px;
+}
+
+.right-side input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+#stadium-name-filter {
+  margin: 5%;
+  padding: 2%;
+}
+
+.scrollable-list {
+  margin:5%;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+#team-list {
+  margin: 5%;
+  padding: 0;
+  list-style: none;
+}
+
+#team-list li {
+  padding: 5px 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.leaflet-tooltip {
+  background-color: #fff;
+  color: #000;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.leaflet-popup-content {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.station-list {
+  max-height: calc(100vh - 240px); /* Adjust for header and padding */
+  overflow-y: auto;
+}
+
+.station-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.station-item:hover {
+  background-color: #f0f0f0;
+}
+
+.city {
+  font-weight: bold;
+}
+
+.address {
+  color: #666;
+  margin-top: 5px;
+}
+
+.overall_rating {
+  color: #333;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.info.legend {
+  background: white;
+  padding: 10px;
+  line-height: 1.5;
+  font-size: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.info.legend div {
+  margin-bottom: 5px;
+}
+
+fieldset legend {
+  font-weight: bold;
+}
+
+fieldset {
+  margin-bottom: 15px;
+}
+
+/* Add consistent spacing for the sections in the right-side panel */
+.address-filter {
+  margin-bottom: 20px; /* Match the gap between sections */
+}
+
+.checkbox {
+  margin-bottom: 20px; /* Ensure the same gap as other sections */
+}
+
+.station-list {
+  margin-top: 0; /* Ensure no additional spacing above */
+}
+
+
+
+
+
+/* style of slider and selection button*/
+
+.selection-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.selection-buttons button {
+  padding: 5px 60px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.selection-buttons button.selected {
+  background-color: #3a4db3;
+  color: white;
+  font-weight: bold;
+}
+
+#rating-slider {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.station-item:hover {
+  background-color: #e9e9e9;
+  cursor: pointer;
+}
+
+
+
+
+
+/* radio and slider color */
+
+/* Update radio button styles */
+input[type="radio"] {
+  accent-color: #3a4db3; /* Blue color same as toolbar */
+}
+
+/* Update slider (range input) styles */
+input[type="range"] {
+  -webkit-appearance: none; /* Remove default styling */
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  background: #ddd;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #3a4db3; /* Blue color same as toolbar */
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #3a4db3; /* Blue color same as toolbar */
+  cursor: pointer;
+}
+
+input[type="range"]::-ms-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #3a4db3; /* Blue color same as toolbar */
+  cursor: pointer;
+}
+
+
+
+
+
+/* Share */
+/* station information*/
+.station-information select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+#station-address {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #666;
+}
+
+/* sharing information*/
+.sharing-information select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+#sharing-address {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #666;
+}
+
+.validation-error {
+  color: red;
+  font-size: 12px;
+  display: block;
+  margin-top: 5px;
+}
+
+textarea {
+  width: 100%;
+  height: 50px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+
+
+
+
+/* sharing button */
+#share-experience-btn {
+  background-color: #3a4db3; /* Purple color */
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#share-experience-btn:hover {
+  background-color: #27347d; /* Darker purple for hover effect */
+}
+
+#share-experience-btn:active {
+  background-color: #1e285e; /* Even darker purple for active state */
+}
+
+#share-experience-btn:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+}
