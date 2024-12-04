@@ -112,8 +112,8 @@ main {
   line-height: 1.5;
 }
 
-.station-list {
-  max-height: calc(80vh - 200px); /* Adjust to make space for the slider */
+.station-list1 {
+  max-height: calc(50vh - 100px); /* Adjust to make space for the slider */
   overflow-y: auto;
 }
 
