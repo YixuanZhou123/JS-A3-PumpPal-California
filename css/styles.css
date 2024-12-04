@@ -114,7 +114,7 @@ main {
 
 /* Adjust the station list height */
 .station-list1 {
-  max-height: calc(40vh); /* Adjust to ensure space for the slider */
+  max-height: calc(20vh); /* Adjust to ensure space for the slider */
   overflow-y: auto;
   margin-bottom: 10px; /* Add spacing below the list */
 }
