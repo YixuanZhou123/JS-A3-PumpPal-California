@@ -113,14 +113,30 @@ main {
 }
 
 .station-list {
-  max-height: calc(100vh - 240px); /* Adjust for header and padding */
+  max-height: calc(80vh - 200px); /* Adjust to make space for the slider */
   overflow-y: auto;
 }
 
-.station-item {
+#rating-filter {
+  margin-top: 10px;
+}
+
+/* Ensure the outermost container scrolls */
+.right-side {
+  width: 20%;
+  background: #f9f9f9;
+  border-right: 1px solid #ccc;
   padding: 10px;
+  overflow-y: auto; /* Outer container scrolls */
+  height: calc(100vh - 120px); /* Full height minus header */
+  display: flex;
+  flex-direction: column;
+}
+
+.station-item {
+  padding: 8px;
   border-bottom: 1px solid #ddd;
-  cursor: pointer;
+  font-size: 14px; /* Smaller font for more items */
 }
 
 .station-item:hover {
