@@ -440,7 +440,7 @@ async function displayLatestComments(city, station) {
 
 
 
-// 5. Sharing a Fueling Experience
+// 5. Sharing a Fueling Experience - to be modified
 shareButton.addEventListener('click', async () => {
   const city = document.querySelector('#city-dropdown').value;
   const station = document.querySelector('#station-dropdown').value;

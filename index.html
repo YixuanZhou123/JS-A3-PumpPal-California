@@ -25,156 +25,160 @@
   <main>
     <div id="map" class="map"></div>
     <div class="right-side">
-      
+
       <div class="selection-buttons">
         <button id="search-btn" class="selected">Search</button>
         <button id="share-btn">Share</button>
       </div>
-      
 
-       <!-- Search -->
-      <section class="address-filter">
-        <fieldset>
-          <legend><strong>Search by</strong></legend>
-          
-          <!-- Radio -->
-          <section class="radio">
-            <div class="input-choice">
-              <label><input id="city" type="radio" name="filter">City</label>
-              <label><input id="address" type="radio" name="filter" checked>Address</label>
+
+      <!-- Search -->
+      <section class="search">
+        <section class="address-filter">
+          <fieldset>
+            <legend><strong>Search by</strong></legend>
+
+            <!-- Radio -->
+            <section class="radio">
+              <div class="input-choice">
+                <label><input id="city" type="radio" name="filter">City</label>
+                <label><input id="address" type="radio" name="filter" checked>Address</label>
+              </div>
+
+              <!-- Search-box -->
+              <div class="search-container">
+                <input type="text" id="search-box" placeholder="Type your input here...">
+                <button class="cross-icon" title="Clear input">
+                  <svg width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path d="M19 5L5 19M5.00001 5L19 19" stroke="#838181" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    </g>
+                  </svg>
+                </button>
+              </div>
+              <ol id="city-choices" class="city-choices hidden"></ol>
+              <ol id="address-choices" class="address-choices hidden"></ol>
+            </section>
+          </fieldset>
+        </section>
+
+        <section class="checkbox">
+          <fieldset>
+            <legend><strong>Select types of gas products</strong></legend>
+
+            <!-- "Select All" checkbox -->
+            <div>
+              <input type="checkbox" id="SelectAll" value="SelectAll">
+              <label for="SelectAll">Select All</label>
             </div>
 
-            <!-- Search-box -->
-            <div class="search-container">
-            <input type="text" id="search-box" placeholder="Type your input here...">
-            <button class="cross-icon" title="Clear input">
-              <svg width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                  <path d="M19 5L5 19M5.00001 5L19 19" stroke="#838181" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                </g>
-              </svg>
-            </button>
+            <!-- Individual checkboxes -->
+            <div>
+              <input type="checkbox" id="Regular" value="Regular">
+              <label for="Regular">Regular</label>
             </div>
-            <ol id="city-choices" class="city-choices hidden"></ol>
-            <ol id="address-choices" class="address-choices hidden"></ol>
-          </section>
-        </fieldset>
-      </section>
+            <div>
+              <input type="checkbox" id="Premium" value="Premium">
+              <label for="Premium">Premium</label>
+            </div>
+            <div>
+              <input type="checkbox" id="Midgrade" value="Midgrade">
+              <label for="Midgrade">Midgrade</label>
+            </div>
+            <div>
+              <input type="checkbox" id="Diesel" value="Diesel">
+              <label for="Diesel">Diesel</label>
+            </div>
+            <div>
+              <input type="checkbox" id="E85" value="E85">
+              <label for="E85">E85</label>
+            </div>
+            <div>
+              <input type="checkbox" id="UNL88" value="UNL88">
+              <label for="UNL88">UNL88</label>
+            </div>
 
-      <section class="checkbox">
-        <fieldset>
-          <legend><strong>Select types of gas products</strong></legend>
-      
-          <!-- "Select All" checkbox -->
-          <div>
-            <input type="checkbox" id="SelectAll" value="SelectAll">
-            <label for="SelectAll">Select All</label>
-          </div>
-      
-          <!-- Individual checkboxes -->
-          <div>
-            <input type="checkbox" id="Regular" value="Regular">
-            <label for="Regular">Regular</label>
-          </div>
-          <div>
-            <input type="checkbox" id="Premium" value="Premium">
-            <label for="Premium">Premium</label>
-          </div>
-          <div>
-            <input type="checkbox" id="Midgrade" value="Midgrade">
-            <label for="Midgrade">Midgrade</label>
-          </div>
-          <div>
-            <input type="checkbox" id="Diesel" value="Diesel">
-            <label for="Diesel">Diesel</label>
-          </div>
-          <div>
-            <input type="checkbox" id="E85" value="E85">
-            <label for="E85">E85</label>
-          </div>
-          <div>
-            <input type="checkbox" id="UNL88" value="UNL88">
-            <label for="UNL88">UNL88</label>
-          </div>
-      
-          <!-- Clear All button -->
-          <button type="button" id="ClearAll">Clear All</button>
-        </fieldset>
-      </section>
+            <!-- Clear All button -->
+            <button type="button" id="ClearAll">Clear All</button>
+          </fieldset>
+        </section>
 
-      <section class="station-list">
-        <fieldset>
-          <legend><strong>Explore Gas Station List</strong></legend>
-        <ol class="station-list">
-          <li id="stationlist-right">
-            <div class="city">Los Angeles</div>
-            <div class="address">1935 E Florence Ave</div>
-            <div class="overall_rating">3.8</div>
-          </li>
-        </ol>
-        </fieldset>
-      </section>
+        <section class="station-list">
+          <fieldset>
+            <legend><strong>Explore Gas Station List</strong></legend>
+            <ol class="station-list">
+              <li id="stationlist-right">
+                <div class="city">Los Angeles</div>
+                <div class="address">1935 E Florence Ave</div>
+                <div class="overall_rating">3.8</div>
+              </li>
+            </ol>
+          </fieldset>
+        </section>
 
-      <section id="rating-filter">
-        <fieldset>
-          <legend><strong>Filter Gas Station by Overall Rating</strong></legend>
-          <input type="range" id="rating-slider" min="0.0" max="5.0" step="0.1" value="0.0">
-          <div id="slider-value">Rating: 0.0</div>
-        </fieldset>
+        <section id="rating-filter">
+          <fieldset>
+            <legend><strong>Filter Gas Station by Overall Rating</strong></legend>
+            <input type="range" id="rating-slider" min="0.0" max="5.0" step="0.1" value="0.0">
+            <div id="slider-value">Rating: 0.0</div>
+          </fieldset>
+        </section>
       </section>
-    
 
 
       <!-- Share -->
-      <section class="station-information">
-        <fieldset>
-          <legend><strong>Station Information</strong></legend>
-          <label for="city-dropdown">City:</label>
-          <select id="city-dropdown" disabled>
-            <option value="" selected>Please select</option>
-          </select>
-          <br><br>
-          <label for="station-dropdown">Station:</label>
-          <select id="station-dropdown" disabled>
-            <option value="" selected>Please select</option>
-          </select>
-          <div id="station-address" style="margin-top: 10px; font-size: 12px; color: #666;"></div>
-        </fieldset>
+      <section class="share">
+        <section class="station-information">
+          <fieldset>
+            <legend><strong>Station Information</strong></legend>
+            <label for="city-dropdown">City:</label>
+            <select id="city-dropdown" disabled>
+              <option value="" selected>Please select</option>
+            </select>
+            <br><br>
+            <label for="station-dropdown">Station:</label>
+            <select id="station-dropdown" disabled>
+              <option value="" selected>Please select</option>
+            </select>
+            <div id="station-address" style="margin-top: 10px; font-size: 12px; color: #666;"></div>
+          </fieldset>
+        </section>
+
+        <section class="sharing-information">
+          <fieldset>
+            <legend><strong>Sharing Information</strong></legend>
+            <label for="product-type">Product Type:</label>
+            <select id="product-type" disabled>
+              <option value="" selected>Please select</option>
+            </select>
+            <br><br>
+            <label for="unit-price">Unit Price ($ per gallon):</label>
+            <input type="text" id="unit-price" placeholder="Please enter">
+            <span id="price-validation" class="validation-error"></span>
+            <br><br>
+            <label for="overall-rating">Overall Rating (0-5):</label>
+            <input type="text" id="overall-rating" placeholder="Please enter">
+            <span id="overall-rating-error" class="validation-error"></span>
+            <br><br>
+            <label for="comment">Comment:</label>
+            <textarea id="comment" placeholder="Please enter a comment within 20 words..."></textarea>
+            <span id="comment-validation-error" class="validation-error"></span>
+            <br><br>
+            <button id="share-experience-btn">Sharing a Fueling Experience</button>
+          </fieldset>
+        </section>
       </section>
-      
-      <section class="sharing-information">
-        <fieldset>
-          <legend><strong>Sharing Information</strong></legend>
-          <label for="product-type">Product Type:</label>
-          <select id="product-type" disabled>
-            <option value="" selected>Please select</option>
-          </select>
-          <br><br>
-          <label for="unit-price">Unit Price ($ per gallon):</label>
-          <input type="text" id="unit-price" placeholder="Please enter">
-          <span id="price-validation" class="validation-error"></span>
-          <br><br>
-          <label for="overall-rating">Overall Rating (0-5):</label>
-          <input type="text" id="overall-rating" placeholder="Please enter">
-          <span id="overall-rating-error" class="validation-error"></span>
-          <br><br>
-          <label for="comment">Comment:</label>
-          <textarea id="comment" placeholder="Please enter a comment within 20 words..."></textarea>
-          <span id="comment-validation-error" class="validation-error"></span>
-          <br><br>
-          <button id="share-experience-btn">Sharing a Fueling Experience</button>
-        </fieldset>
-      </section>
-      
+
     </div>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script type="module" src="js/map.js"></script>
   <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/button.js"></script>
 </body>
 
 </html>

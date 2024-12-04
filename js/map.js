@@ -82,7 +82,12 @@ function updateMapStations(stationGeoJSON, stationLayer) {
     marker.bindPopup(`
       <strong>Station:</strong> ${properties.loc_name || 'N/A'}<br>
       <strong>Address:</strong> ${properties.address_1 || 'N/A'}<br>
-      <strong>Rating:</strong> ${overallRating.toFixed(1)}
+      <strong>Services:</strong> ${properties.services_included || 'N/A'}<br>
+      <strong>Product:</strong> ${properties.product_name || 'N/A'}  
+      <strong>Price($/gallon):</strong> ${properties.price_current || 'N/A'}<br>
+      <strong>Phone:</strong> ${properties.phone || 'N/A'}<br>
+      <strong>Rating:</strong> ${overallRating.toFixed(1)}<br>
+      <strong>Comment:</strong> ${properties.comment || 'N/A'}
     `);
 
     marker.bindTooltip(`${properties.loc_name || 'N/A'}, ${properties.city || 'N/A'}`, {
