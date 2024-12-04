@@ -112,9 +112,11 @@ main {
   line-height: 1.5;
 }
 
+/* Adjust the station list height */
 .station-list1 {
-  max-height: calc(50vh - 100px); /* Adjust to make space for the slider */
+  max-height: calc(40vh); /* Adjust to ensure space for the slider */
   overflow-y: auto;
+  margin-bottom: 10px; /* Add spacing below the list */
 }
 
 #rating-filter {
