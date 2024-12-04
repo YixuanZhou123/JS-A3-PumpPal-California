@@ -1,0 +1,354 @@
+---
+title: "px"
+output: html_document
+date: "2023-10-31"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+install.packages('pxweb')
+
+```{r}
+library(pxweb)
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+library(sf)
+library(tidyr)
+```
+
+```{r}
+library(rjson)
+```
+
+D:/OneDrive - PennO365/penn/5th/MUSA611/dashboard/dataprocessing/faroe_island
+Import Faroe Island
+
+
+
+```{r}
+  library(sf)
+  data(world)
+  
+  # import world data, and rename name_long to To_Country
+  world <- st_read(system.file("shapes/world.gpkg", package="spData"))
+  colnames(world)[2] <- "To_Country"
+  # replace NA with 0
+  world$pop <- world$pop %>% replace_na(0)
+  world$lifeExp <- world$lifeExp %>% replace_na(0)
+  world$gdpPercap   <- world$gdpPercap %>% replace_na(0)
+  # remove columns
+  world <- world[,!(names(world) %in% c("iso_a2","region_un","subregion",'type'))]
+  # merge America
+  world$continent[world$continent == 'North America'| world$continent =='South America'] <- 'America'
+  # assign Greenland to Greenland
+  world$continent[world$To_Country == 'Greenland'] <- 'Greenland'
+  # assign Denmark to Denmark
+  world$continent[world$To_Country == 'Denmark'] <- 'Denmark'
+  
+```
+```{r}
+# import faroe island, rename geometry to geom, dissolve to one polygon
+faroe <- read_sf(dsn = "D:/OneDrive - PennO365/penn/5th/MUSA611/dashboard/dataprocessing/faroe_island", layer = "faroe")%>% 
+  st_union() %>% 
+  st_sf()%>% 
+  rename(geom = geometry)
+  st_transform(faroe, crs = 4326)
+# add columns
+faroe$To_Country <- 'Faroe Islands'
+faroe$continent <- 'Denmark'
+faroe$area_km2 <- 1393.0000
+faroe$pop <- 54738.0000
+faroe$lifeExp <- 83.0900
+faroe$gdpPercap <- 58585.0000
+# add faroe to world
+world <- rbind(world, faroe)
+```
+## Aferica
+```{r}
+# merge other Africa
+otherAF <- world %>%
+  filter(!To_Country %in% c('Ethiopia','Morocco','Somalia') & continent == 'Africa')
+
+# copy otherAF to otherAF0 
+otherAF0 <- otherAF
+#generate mean data for these
+otherAF0$pop[1] <-  mean(otherAF0$pop, na.rm = TRUE)
+otherAF0$area_km2[1] <-  sum(otherAF0$area_km2, na.rm = TRUE)
+otherAF0$lifeExp[1] <-  mean(otherAF0$lifeExp, na.rm = TRUE)
+otherAF0$gdpPercap[1] <-  mean(otherAF0$gdpPercap, na.rm = TRUE)
+# keep only the first row
+otherAF0 <- otherAF0[1,] 
+# dissolve to one polygon
+otherAF <-  otherAF %>% st_union() %>% st_sf()
+# remove geometry
+otherAF0 <- otherAF0%>% st_set_geometry(NULL)
+
+otherAF <- otherAF %>% 
+  rename(geom = geometry)
+# change To_Country to 'Other Africa'
+otherAF['To_Country'] <- c('Other Africa')
+otherAF0['To_Country'] <- c('Other Africa')
+# merge otherAF0 to otherAF
+otherAF <- otherAF %>% left_join(otherAF0, by = 'To_Country')
+# deselect other africa country from world
+world <-  world %>% filter(To_Country %in% c('Ethiopia','Morocco','Somalia') | continent != 'Africa') 
+# add otherAF to world
+world <- rbind(world, otherAF)
+```
+
+
+## America
+```{r}
+otherAM <- world %>%
+  filter(!To_Country %in% c('Canada','United States') & continent == 'America') 
+otherAM0 <- otherAM
+#generate mean data for these
+otherAM0$pop[1] <-  mean(otherAM0$pop, na.rm = TRUE)
+otherAM0$area_km2[1] <-  sum(otherAM0$area_km2, na.rm = TRUE)
+otherAM0$lifeExp[1] <-  mean(otherAM0$lifeExp, na.rm = TRUE)
+otherAM0$gdpPercap[1] <-  mean(otherAM0$gdpPercap, na.rm = TRUE)
+otherAM0 <- otherAM0[1,] 
+otherAM <-  otherAM %>% st_union() %>% st_sf()
+otherAM0 <- otherAM0%>% st_set_geometry(NULL)
+
+otherAM <- otherAM %>% 
+  rename(geom = geometry)
+otherAM['To_Country'] <- c('Other America')
+otherAM0['To_Country'] <- c('Other America')
+otherAM <- otherAM %>% left_join(otherAM0, by = 'To_Country')
+
+world <-  world %>% filter(To_Country %in% c('Canada','United States') | continent != 'America') 
+world <- rbind(world, otherAM)
+```
+
+## Oceania
+
+```{r}
+otherOA <- world %>%
+  filter(continent == 'Oceania') 
+otherOA0 <- otherOA
+#generate mean data for these
+otherOA0$pop[1] <-  mean(otherOA0$pop, na.rm = TRUE)
+otherOA0$area_km2[1] <-  sum(otherOA0$area_km2, na.rm = TRUE)
+otherOA0$lifeExp[1] <-  mean(otherOA0$lifeExp, na.rm = TRUE)
+otherOA0$gdpPercap[1] <-  mean(otherOA0$gdpPercap, na.rm = TRUE)
+otherOA0 <- otherOA0[1,] 
+otherOA <-  otherOA %>% st_union() %>% st_sf()
+otherOA0 <- otherOA0%>% st_set_geometry(NULL)
+
+otherOA <- otherOA %>% 
+  rename(geom = geometry)
+otherOA['To_Country'] <- c('Oceania')
+otherOA0['To_Country'] <- c('Oceania')
+otherOA <- otherOA %>% left_join(otherOA0, by = 'To_Country')
+
+world <-  world %>% filter(continent != 'Oceania') 
+world <- rbind(world, otherOA)
+```
+
+## Europe
+
+```{r}
+# merge other Africa
+otherEU <- world %>%
+  filter(!To_Country %in% c('Finland','Iceland','Norway','Sweden','Estonia','Latvia','Lithuania','Belgium','France','Greece','Netherlands',
+                            'Ireland','Italy','Luxembourg','Malta','Poland','Portugal','Slovakia','Slovenia','Spain','United Kingdom','Czech Republic'
+                            ,'Germany','Hungary','Austria','Switzerland','Bulgaria','Romania',
+                            'Russian Federation','Belarus','Ukraine') & continent == 'Europe')
+
+# copy otherEU to otherEU0 
+otherEU0 <- otherEU
+#generate mean data for these
+otherEU0$pop[1] <-  mean(otherEU0$pop, na.rm = TRUE)
+otherEU0$area_km2[1] <-  sum(otherEU0$area_km2, na.rm = TRUE)
+otherEU0$lifeExp[1] <-  mean(otherEU0$lifeExp, na.rm = TRUE)
+otherEU0$gdpPercap[1] <-  mean(otherEU0$gdpPercap, na.rm = TRUE)
+# keep only the first row
+otherEU0 <- otherEU0[1,] 
+# dissolve to one polygon
+otherEU <-  otherEU %>% st_union() %>% st_sf()
+# remove geometry
+otherEU0 <- otherEU0%>% st_set_geometry(NULL)
+
+otherEU <- otherEU %>% 
+  rename(geom = geometry)
+# change To_Country to 'Other EUrica'
+otherEU['To_Country'] <- c('Other Europe')
+otherEU0['To_Country'] <- c('Other Europe')
+# merge otherEU0 to otherEU
+otherEU <- otherEU %>% left_join(otherEU0, by = 'To_Country')
+# deselect other EUrica country from world
+world <-  world %>% filter(To_Country %in% c('Finland','Iceland','Norway','Sweden','Estonia','Latvia','Lithuania','Belgium','France','Greece','Netherlands',
+                            'Ireland','Italy','Luxembourg','Malta','Poland','Portugal','Slovakia','Slovenia','Spain','United Kingdom','Czech Republic'
+                            ,'Germany','Hungary','Austria','Switzerland','Bulgaria','Romania',
+                            'Russian Federation','Belarus','Ukraine') | continent != 'Europe') 
+# add otherEU to world
+world <- rbind(world, otherEU)
+```
+
+## ASIA
+
+```{r}
+# merge other ASrica
+otherAS <- world %>%
+  filter(!To_Country %in% c('Afghanistan','Bangladesh','Philippines','Cyprus','India','Iraq','Iran','Japan','China','Lebanon','Turkey',
+                            'Pakistan','Sri Lanka','Syria','Thailand','Vietnam') & continent == 'Asia')
+
+# copy otherAS to otherAS0 
+otherAS0 <- otherAS
+#generate mean data for these
+otherAS0$pop[1] <-  mean(otherAS0$pop, na.rm = TRUE)
+otherAS0$area_km2[1] <-  sum(otherAS0$area_km2, na.rm = TRUE)
+otherAS0$lifeExp[1] <-  mean(otherAS0$lifeExp, na.rm = TRUE)
+otherAS0$gdpPercap[1] <-  mean(otherAS0$gdpPercap, na.rm = TRUE)
+# keep only the first row
+otherAS0 <- otherAS0[1,] 
+# dissolve to one polygon
+otherAS <-  otherAS %>% st_union() %>% st_sf()
+# remove geometry
+otherAS0 <- otherAS0%>% st_set_geometry(NULL)
+
+otherAS <- otherAS %>% 
+  rename(geom = geometry)
+# change To_Country to 'Other ASrica'
+otherAS['To_Country'] <- c('Other Asia')
+otherAS0['To_Country'] <- c('Other Asia')
+# merge otherAS0 to otherAS
+otherAS <- otherAS %>% left_join(otherAS0, by = 'To_Country')
+# deselect other ASrica country from world
+world <-  world %>% filter(To_Country %in% c('Afghanistan','Bangladesh','Philippines','Cyprus','India','Iraq','Iran','Japan','China','Lebanon','Turkey',
+                            'Pakistan','Sri Lanka','Syria','Thailand','Vietnam') | continent != 'Asia') 
+# add otherAS to world
+world <- rbind(world, otherAS)
+```
+
+
+
+```{r}
+world_map <- subset(world, select = c(continent, subregion, area_km2, pop, lifeExp, gdpPercap,To_Country))
+```
+
+```{r}
+Mig_raw <- st_read('D:\\OneDrive - PennO365\\penn\\5th\\MUSA611\\dashboard\\Greenland_Final.csv')
+```
+```{r}
+header.true <- function(df) {
+  names(df) <- as.character(unlist(df[1,]))
+  df[-1,]
+}
+```
+
+```{r}
+Mig <- header.true(Mig_raw)
+#Mig_true <- header.true(Mig_raw)
+#Mig <- Mig_true[-c(1,2,3,4),]
+#Mig_gl <- subset(Mig,Citizenship == 'Danish')
+#Mig_wide <- reshape(Mig, idvar = "To_Country", timevar = 'Sex', direction = "wide")
+
+```
+
+```{r}
+#
+years <- as.character(1993:2022)
+
+# Create a vector of the columns you want to keep
+cols_to_keep <- c('To_Country', 'Sex', 'Status')
+
+
+
+unique_dfs <- list()
+
+# Loop over each year and create a unique dataframe
+for (year in 1993:2022) {
+  # Create the dataframe for the current year
+  df_for_year <- Mig %>% 
+    select(all_of(cols_to_keep), all_of(as.character(year)))
+  
+  # Store the dataframe in the list with a unique name
+  unique_dfs[[as.character(year)]] <- df_for_year
+}
+#unique_dfs[["1996"]]
+
+#colnames(unique_dfs[["1996"]])[3] 
+
+for (year in 1993:2022) {
+  # Create the dataframe for the current year
+  
+  index_as_string <- as.character(year)
+  colnames(unique_dfs[[index_as_string]])[4] = 'Vals'
+  unique_dfs[[index_as_string]] <-  unique_dfs[[index_as_string]] %>% mutate(Year = year)
+  unique_dfs[[index_as_string]] <-  unique_dfs[[index_as_string]] %>%
+    group_by(To_Country) %>%
+    mutate(
+           MenImmigrations = if_else(Sex == 'Men' & Status == 'Immigrations', Vals,'0'), 
+           MenEmigrations = if_else(Sex == 'Men' & Status == 'Emigrations', Vals,'0'),
+           WomenImmigrations = if_else(Sex == 'Women' & Status == 'Immigrations', Vals,'0'),
+           WomenEmigrations = if_else(Sex == 'Women' & Status == 'Emigrations', Vals,'0')) %>%
+    ungroup()
+  unique_dfs[[index_as_string]][, c(5:8)] <- sapply( unique_dfs[[index_as_string]][, c(5:8)], as.numeric)
+  unique_dfs[[index_as_string]] <- unique_dfs[[index_as_string]][ c("To_Country", "MenImmigrations", "MenEmigrations","WomenImmigrations","WomenEmigrations", "Year")]
+  unique_dfs[[index_as_string]] <-  unique_dfs[[index_as_string]] %>%
+  group_by(To_Country) %>%
+  mutate(MenImmigrations = max(MenImmigrations, na.rm = TRUE),
+         MenEmigrations = max(MenEmigrations, na.rm = TRUE),
+         WomenImmigrations = max(WomenImmigrations, na.rm = TRUE),
+         WomenEmigrations = max(WomenEmigrations, na.rm = TRUE)) %>%
+  ungroup() %>%
+    distinct()
+}
+
+```
+
+
+
+```{r}
+Mig <-bind_rows(unique_dfs)
+wtf <- Mig %>% nest(-To_Country)
+world_select <- world %>%  filter(!To_Country %in% c('French Southern and Antarctic Lands','Antarctica')) 
+xxx <- world_select %>% full_join(wtf,by= 'To_Country')
+
+```
+
+```{r}
+#st_write(xxx, "xxxxxxxx.geojson")
+geom <- xxx[c('To_Country','geom')]
+nested_sf <- xxx %>% st_drop_geometry()
+nested_sf <- nested_sf %>%
+  mutate(across(where(is.list), ~paste(unlist(.), collapse = ", ")))
+nested_sf <- left_join(nested_sf,geom)
+st_write(nested_sf, "path_to_output_fil.json", driver = "GeoJSON")
+```
+```{r}
+st_write(xxx, "world_asdasdasexp.shp")
+```
+
+
+
+```{r}
+world_exp <- world %>%  filter(To_Country %in% c('Denmark','Faroe Islands')) 
+# export world_exp to shapefile
+st_write(world_exp, "world_exp.shp")
+```
+
+```{r}
+
+French Southern and Antarctic Lands
+Antarctica
+Denmark
+```
+
+
+
+```{r}
+geo <- subset(world, select = c(To_Country))
+xxx <- world %>% full_join(Mig,by= 'To_Country')
+```
+
+Final temp solu
+```{r}
+xxxsb <- world_select %>% full_join(Mig,by= 'To_Country')
+```
+
