@@ -1,9 +1,6 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
-import { getAnalytics } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js';
-import { getFirestore, collection, addDoc, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
-import firebase from "firebase/app";
-import "firebase/database";
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { app } from './firebase-config'; // Import Firebase app configuration
+import { initializeApp } from 'firebase/app';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,9 +19,35 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
+/**
+ * Upload fueling experience data to Firebase.
+ * @param {Object} data - The fueling experience data to upload.
+ */
+export async function uploadFuelingExperience(data) {
+  try {
+    await addDoc(collection(db, 'fuelingExperiences'), data);
+    console.log('Data successfully uploaded:', data);
+    showToast('Upload successful!');
+  } catch (error) {
+    console.error('Error uploading data:', error);
+    showToast('Upload failed. Please try again.');
+  }
+}
 
-firebase.initializeApp(firebaseConfig);
-export default firebase;
+/**
+ * Display a toast message.
+ * @param {string} message - The message to display.
+ */
+ function showToast(message) {
+  const toast = document.createElement('div');
+  toast.textContent = message;
+  toast.className = 'toast';
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
